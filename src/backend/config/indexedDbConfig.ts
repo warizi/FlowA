@@ -1,11 +1,12 @@
 import Dexie, { type EntityTable } from "dexie";
 import type { Note, NoteCate, NoteLabel } from "@entities/note";
-import type { Todo, TodoCate, TodoLabel } from "@entities/todo";
+import type { TodoCate, TodoLabel } from "@entities/todo";
+import type { TodoEntity } from "@backend/todo/domain/TodoEntity";
 
 export interface FlowaDb extends Dexie {
   todoCate: EntityTable<TodoCate, "id">;
   todoLabel: EntityTable<TodoLabel, "id">;
-  todo: EntityTable<Todo, "id">;
+  todo: EntityTable<TodoEntity, "id">;
   noteCate: EntityTable<NoteCate, "id">;
   noteLabel: EntityTable<NoteLabel, "id">;
   note: EntityTable<Note, "id">;
