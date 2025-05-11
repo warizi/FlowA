@@ -1,5 +1,6 @@
 import { flowaDb } from "@backend/config/indexedDbConfig";
 import type { TodoEntity, TodoCreateEntity } from "../domain/TodoEntity";
+import { formatDate } from "../utils/formatDate";
 
 class TodoRepository {
 
@@ -9,10 +10,18 @@ class TodoRepository {
     return todos;
   }
 
-  public async getById(id: number): Promise<TodoEntity | undefined> {
+  public async getById(id: number | string): Promise<TodoEntity | undefined> {
     const todo = await flowaDb.todo.get(id) as TodoEntity;
 
     return todo;
+  }
+
+  public async getAllByIsDone(): Promise<TodoEntity[]> {
+    const todos = await flowaDb.todo
+      .where("isDone")
+      .equals(1)
+      .toArray() as TodoEntity[];
+    return todos;
   }
 
   public async save(todo: TodoEntity | TodoCreateEntity): Promise<TodoEntity> {
@@ -46,15 +55,25 @@ class TodoRepository {
   }
 
   async findExistedToday(): Promise<TodoEntity[]> {
-    const now = new Date();
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
-  
+    const today = formatDate(new Date(), "yyyy-MM-dd");
+
     const todos = await flowaDb.todo
-      .where("startDate")
-      .between(startOfDay.toISOString(), endOfDay.toISOString(), true, true)
-      .toArray() as TodoEntity[];
+      .filter((todo: TodoEntity) => {
+        const { startDate, endDate } = todo;
   
+        if (!startDate) return false;
+  
+        const start = formatDate(startDate, "yyyy-MM-dd");
+        const end = endDate ? formatDate(endDate, "yyyy-MM-dd") : undefined;
+  
+        if (end) {
+          return start <= today && today <= end;
+        }
+  
+        return start === today;
+      })
+      .toArray();
+
     return todos;
   }
 
