@@ -26,7 +26,7 @@ class TodoLabelRepository {
     await flowaDb.todoLabel.delete(id);
   }
 
-  public async getById(id: number): Promise<TodoLabelEntity | undefined> {
+  public async getById(id: number | string): Promise<TodoLabelEntity | undefined> {
     const todoLabel = await flowaDb.todoLabel.get(id) as TodoLabelEntity;
 
     return todoLabel;
