@@ -8,7 +8,7 @@ class TodoCateRepository {
     return todoCates;
   }
 
-  public async getById(id: number): Promise<TodoCateEntity | undefined> {
+  public async getById(id: number | string): Promise<TodoCateEntity | undefined> {
     const todoCate = await flowaDb.todoCate.get(id) as TodoCateEntity;
 
     return todoCate;
