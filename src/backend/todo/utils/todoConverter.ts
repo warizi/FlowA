@@ -1,6 +1,6 @@
 import type { Todo, TodoCreate } from "@entities/todo";
 import type { TodoEntity, TodoCreateEntity } from "../domain/TodoEntity";
-import type { TodoResDto } from "../dto/TodoResDto";
+import type { TodoDto } from "../dto/TodoDto";
 import type { TodoLabelEntity } from "../domain/TodoLabelEntity";
 import { formatDate } from "./formatDate";
 
@@ -14,7 +14,7 @@ export function toTodoDbModel(data: Todo | TodoCreate): TodoEntity | TodoCreateE
   }
 }
 
-export function toTodoModel(data: TodoEntity[], labels: TodoLabelEntity[]): TodoResDto[] {
+export function toTodoModel(data: TodoEntity[], labels: TodoLabelEntity[]): TodoDto[] {
   return data.map((todo) => {
     const label = labels.find(label => label.id === todo.labelId);
     return {
@@ -27,13 +27,13 @@ export function toTodoModel(data: TodoEntity[], labels: TodoLabelEntity[]): Todo
   })
 }
 
-export function sortOrderTodoList(todos: TodoResDto[]): TodoResDto[] {
+export function sortOrderTodoList(todos: TodoDto[]): TodoDto[] {
   return todos.sort((a, b) => {
     return a.order - b.order;
   });
 }
 
-export function filterNotDoneOrDoneToday(todos: TodoResDto[]): TodoResDto[] {
+export function filterNotDoneOrDoneToday(todos: TodoDto[]): TodoDto[] {
   return todos.filter((todo) => {
     const { doneDate } = todo;
 

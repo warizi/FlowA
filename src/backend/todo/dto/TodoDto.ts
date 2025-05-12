@@ -1,5 +1,5 @@
 
-export interface TodoResDto {
+export interface TodoDto {
   id: number | string;
   title: string;
   isDone: boolean;
@@ -18,7 +18,7 @@ export interface TodoResDto {
   createdAt?: string;
 }
 
-export interface TodoCreateResDto {
+export interface TodoCreateDto {
   title: string;
   isDone: boolean;
   sub?: TodoSubDto[];
