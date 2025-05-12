@@ -15,6 +15,9 @@ const buttonStyle = (theme: Theme) => ({
   border: "none",
   borderRadius: theme.radius.medium,
   cursor: "pointer",
+  ":hover": {
+    backgroundColor: theme.colors.background.hover,
+  }
 })
 
 function CommonButton({
