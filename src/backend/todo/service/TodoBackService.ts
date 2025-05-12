@@ -1,4 +1,4 @@
-import type { TodoCreateResDto, TodoResDto } from "../dto/TodoResDto";
+import type { TodoCreateDto, TodoDto } from "../dto/TodoDto";
 import TodoLabelRepository from "../repository/TodoLabelRepository";
 import { todoRepository } from "../repository/TodoRepository";
 import { filterNotDoneOrDoneToday, sortOrderTodoList, toTodoDbModel, toTodoModel } from "../utils/todoConverter";
@@ -7,42 +7,42 @@ class TodoBackService {
   private todoRepository = todoRepository;
   private todoLabelRepository = TodoLabelRepository;
   
-  public async getAllTodos(): Promise<TodoResDto[]> {
+  public async getAllTodos(): Promise<TodoDto[]> {
     const todos = await this.todoRepository.getAll();
     const todoLabels = await this.todoLabelRepository.getAll();
 
     return sortOrderTodoList(filterNotDoneOrDoneToday(toTodoModel(todos, todoLabels)));
   };
 
-  public async getAllByIsDone(): Promise<TodoResDto[]> {
+  public async getAllByIsDone(): Promise<TodoDto[]> {
     const todos = await this.todoRepository.getAllByIsDone();
     const todoLabels = await this.todoLabelRepository.getAll();
 
     return sortOrderTodoList(toTodoModel(todos, todoLabels));
   }
 
-  public async findByCateId(id: number): Promise<TodoResDto[]> {
+  public async findByCateId(id: number): Promise<TodoDto[]> {
     const todos = await this.todoRepository.findByCateId(id);
     const todoLabels = await this.todoLabelRepository.getAll();
 
     return sortOrderTodoList(filterNotDoneOrDoneToday(toTodoModel(todos, todoLabels)));
   }
 
-  public async findByCateIdAndIsDone(id: number): Promise<TodoResDto[]> {
+  public async findByCateIdAndIsDone(id: number): Promise<TodoDto[]> {
     const todos = await this.todoRepository.findByCateIdAndIsDone(id, 1);
     const todoLabels = await this.todoLabelRepository.getAll();
 
     return sortOrderTodoList(toTodoModel(todos, todoLabels));
   }
 
-  public async findTodayByStartDateAndEndDate(): Promise<TodoResDto[]> {
+  public async findTodayByStartDateAndEndDate(): Promise<TodoDto[]> {
     const todos = await this.todoRepository.findExistedToday();
     const todoLabels = await this.todoLabelRepository.getAll();
 
     return sortOrderTodoList(filterNotDoneOrDoneToday(toTodoModel(todos, todoLabels)));
   }
 
-  public async saveTodo(todo: TodoResDto | TodoCreateResDto): Promise<void> {
+  public async saveTodo(todo: TodoDto | TodoCreateDto): Promise<void> {
     if ("id" in todo) {
       await this.todoRepository.save(toTodoDbModel(todo));
     } else {
@@ -51,13 +51,13 @@ class TodoBackService {
     }
   }
 
-  public async findByImportant(): Promise<TodoResDto[]> {
+  public async findByImportant(): Promise<TodoDto[]> {
     const todos = await this.todoRepository.findByImportant(1);
     const todoLabels = await this.todoLabelRepository.getAll();
     return sortOrderTodoList(filterNotDoneOrDoneToday(toTodoModel(todos, todoLabels)));
   }
 
-  public async findByImportantAndIsDone(): Promise<TodoResDto[]> {
+  public async findByImportantAndIsDone(): Promise<TodoDto[]> {
     const todos = await this.todoRepository.findByImportantAndIsDone(1, 1);
     const todoLabels = await this.todoLabelRepository.getAll();
     return sortOrderTodoList(toTodoModel(todos, todoLabels));
@@ -75,7 +75,7 @@ class TodoBackService {
     await this.todoRepository.deleteById(id);
   }
 
-  public async getById(id: number | string): Promise<TodoResDto | undefined> {
+  public async getById(id: number | string): Promise<TodoDto | undefined> {
     const todo = await this.todoRepository.getById(id);
     const todoLabels = await this.todoLabelRepository.getAll();
     if (todo) {
