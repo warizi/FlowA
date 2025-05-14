@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { ContextMenuItemType } from "../model/type";
+import type { ContextMenuItemType } from "../model/type";
 import { contextMenuItemStyles } from "./ContextMenuItem.style";
 
 function ContextMenuItem({
