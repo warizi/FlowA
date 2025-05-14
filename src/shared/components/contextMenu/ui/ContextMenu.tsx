@@ -14,9 +14,9 @@ function ContextMenu() {
 
   return (
     <div css={container(position)}>
-      {items.map((item: ContextMenuItemType) => (
+      {items.map((item: ContextMenuItemType, index) => (
         <ContextMenuItem
-          key={item.label}
+          key={`${item.label}-${index}`}
           label={item.label}
           onClick={item.onClick}
         />
